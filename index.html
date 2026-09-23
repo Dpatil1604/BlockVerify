@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BlockVerify - Certificate Verification</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            BLOCK<span>VERIFY</span>
+        </div>
+
+        <a href="admin.html" class="admin-link">
+            Institution Portal
+        </a>
+
+    </header>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Verify Academic Certificates
+                <br>
+                Using Blockchain
+            </h1>
+
+            <p>
+                BlockVerify provides a secure and transparent
+                way to verify academic certificates using
+                blockchain technology.
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="scrollToVerification()">
+
+                Verify Certificate
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- HOW IT WORKS -->
+
+    <section class="info-section">
+
+        <h2>How BlockVerify Works</h2>
+
+        <div class="info-container">
+
+            <div class="info-card">
+
+                <h3>01</h3>
+
+                <h4>Certificate Issued</h4>
+
+                <p>
+                    The authorized institution issues
+                    a certificate through the blockchain.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>02</h3>
+
+                <h4>Blockchain Record</h4>
+
+                <p>
+                    Certificate details are stored
+                    securely on the blockchain.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>03</h3>
+
+                <h4>Certificate Verified</h4>
+
+                <p>
+                    Anyone can verify a certificate
+                    using its unique Certificate ID.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- VERIFICATION -->
+
+    <section
+        class="verification"
+        id="verification">
+
+        <div class="card">
+
+            <p class="section-label">
+                PUBLIC VERIFICATION
+            </p>
+
+            <h2>
+                Verify Certificate
+            </h2>
+
+            <p class="description">
+                Enter the unique certificate ID to check
+                its authenticity and current status.
+            </p>
+
+            <input
+                type="text"
+                id="certificateId"
+                placeholder="Enter Certificate ID">
+
+            <button
+                class="primary-btn full"
+                onclick="verifyCertificate()">
+
+                Verify Certificate
+
+            </button>
+
+            <div
+                id="result"
+                class="result">
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="logo">
+            BLOCK<span>VERIFY</span>
+        </div>
+
+        <p>
+            Blockchain-Based Academic Certificate Verification System
+        </p>
+
+    </footer>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
