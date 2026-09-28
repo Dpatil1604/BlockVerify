@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BlockVerify institution portal for managing academic certificates on blockchain.">
+    <title>BlockVerify - Institution Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            BLOCK<span>VERIFY</span>
+        </div>
+        <a href="index.html" class="admin-link">
+            Public Verification
+        </a>
+    </header>
+
+    <!-- ADMIN HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="small-title">INSTITUTION PORTAL</p>
+            <h1>Certificate Management</h1>
+            <p>
+                Authorized institution wallets can issue,
+                update, revoke and manage academic certificates.
+            </p>
+            <button
+                id="connectWalletBtn"
+                class="primary-btn"
+                type="button"
+                onclick="connectWallet()">
+                Connect Institution Wallet
+            </button>
+            <button
+                id="disconnectWalletBtn"
+                class="danger-btn"
+                type="button"
+                onclick="disconnectWallet()"
+                style="display:none; margin:10px auto 0; width:220px;">
+                Disconnect Wallet
+            </button>
+        </div>
+    </section>
+
+    <!-- ADMIN SECTION -->
+    <section class="admin">
+        <div class="card">
+            <p class="section-label">ADMINISTRATION</p>
+            <h2>Manage Certificates</h2>
+            <p class="description">
+                Connect the authorized institution wallet
+                before performing any certificate operation.
+            </p>
+
+            <!-- ISSUE CERTIFICATE -->
+            <h3>Issue Certificate</h3>
+            <input
+                type="text"
+                id="issueCertificateId"
+                placeholder="Certificate ID"
+                aria-label="Certificate ID for issuing"
+                autocomplete="off">
+            <input
+                type="text"
+                id="studentName"
+                placeholder="Student Name"
+                aria-label="Student name"
+                autocomplete="off">
+            <input
+                type="text"
+                id="course"
+                placeholder="Course / Degree"
+                aria-label="Course or degree"
+                autocomplete="off">
+            <button
+                class="primary-btn full"
+                type="button"
+                onclick="issueCertificate()">
+                Issue Certificate
+            </button>
+
+            <!-- UPDATE CERTIFICATE -->
+            <h3 class="update-title">Update Certificate</h3>
+            <input
+                type="text"
+                id="updateCertificateId"
+                placeholder="Certificate ID"
+                aria-label="Certificate ID for updating"
+                autocomplete="off">
+            <input
+                type="text"
+                id="updateStudentName"
+                placeholder="New Student Name"
+                aria-label="Updated student name"
+                autocomplete="off">
+            <input
+                type="text"
+                id="updateCourse"
+                placeholder="New Course / Degree"
+                aria-label="Updated course or degree"
+                autocomplete="off">
+            <button
+                class="primary-btn full"
+                type="button"
+                onclick="updateCertificate()">
+                Update Certificate
+            </button>
+
+            <!-- REVOKE CERTIFICATE -->
+            <h3 class="revoke-title">Revoke Certificate</h3>
+            <input
+                type="text"
+                id="revokeCertificateId"
+                placeholder="Certificate ID"
+                aria-label="Certificate ID for revoking"
+                autocomplete="off">
+            <button
+                class="danger-btn full"
+                type="button"
+                onclick="revokeCertificate()">
+                Revoke Certificate
+            </button>
+
+            <!-- CERTIFICATE EXPIRY -->
+            <h3 class="update-title">Manage Certificate Expiry</h3>
+            <p class="description">
+                Set an expiry date for an existing certificate.
+            </p>
+            <input
+                type="text"
+                id="expiryCertificateId"
+                placeholder="Certificate ID"
+                aria-label="Certificate ID for expiry management"
+                autocomplete="off">
+            <label for="certificateExpiryDate">Expiry Date</label>
+            <input
+                type="date"
+                id="certificateExpiryDate"
+                aria-label="Certificate expiry date">
+            <button
+                class="primary-btn full"
+                type="button"
+                onclick="setCertificateExpiry()">
+                Set / Update Expiry
+            </button>
+
+            <!-- CERTIFICATE STATISTICS -->
+            <h3 class="update-title">Certificate Statistics</h3>
+            <p class="description">
+                View the total number of issued certificates
+                and the stored valid and revoked counts.
+            </p>
+            <button
+                class="primary-btn full"
+                type="button"
+                onclick="getTotalCertificates()"
+                style="margin-bottom:12px;">
+                View Total Certificates
+            </button>
+            <button
+                class="primary-btn full"
+                type="button"
+                onclick="getCertificateCountByStatus()">
+                View Valid / Revoked Counts
+            </button>
+            <div
+                id="statisticsResult"
+                class="result"
+                aria-live="polite"
+                aria-atomic="true">
+            </div>
+
+            <!-- MY ISSUED CERTIFICATES DASHBOARD -->
+            <h3 class="update-title">My Issued Certificates</h3>
+            <p class="description">
+                View and manage certificates issued by the connected institution wallet.
+            </p>
+
+            <!-- SUMMARY CARDS -->
+            <div class="issuer-dashboard">
+                <div class="issuer-summary">
+                    <div class="summary-card">
+                        <span>Total Issued</span>
+                        <strong id="issuerTotal">0</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Valid</span>
+                        <strong id="issuerValid">0</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Revoked</span>
+                        <strong id="issuerRevoked">0</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Expired</span>
+                        <strong id="issuerExpired">0</strong>
+                    </div>
+                </div>
+
+                <!-- SEARCH AND FILTER -->
+                <div class="issuer-controls">
+                    <input
+                        type="text"
+                        id="issuerSearch"
+                        placeholder="Search by ID, student name or course..."
+                        aria-label="Search issued certificates"
+                        oninput="filterIssuerCertificates()">
+                    <select
+                        id="issuerStatusFilter"
+                        aria-label="Filter certificates by status"
+                        onchange="filterIssuerCertificates()">
+                        <option value="ALL">All Statuses</option>
+                        <option value="VALID">Valid</option>
+                        <option value="REVOKED">Revoked</option>
+                        <option value="EXPIRED">Expired</option>
+                    </select>
+                    <button
+                        class="primary-btn"
+                        type="button"
+                        onclick="getCertificatesByIssuer()">
+                        Refresh
+                    </button>
+                </div>
+
+                <!-- CERTIFICATE TABLE -->
+                <div
+                    id="issuerResult"
+                    class="result"
+                    aria-live="polite"
+                    aria-atomic="true">
+                    <p>Connect the institution wallet and click Refresh to load certificates.</p>
+                </div>
+
+                <!-- CERTIFICATE DETAILS -->
+                <div
+                    id="issuerDetails"
+                    class="result"
+                    aria-live="polite"
+                    aria-atomic="true">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="logo">
+            BLOCK<span>VERIFY</span>
+        </div>
+        <p>Institution Certificate Management Portal</p>
+        <p>© BlockVerify</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
